@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./fonts/DanfoStd.otf";
 import "./App.css";
-import { ChakraProvider, Grid, GridItem } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 // require("dotenv").config();
 
 // export function SelectAutoWidth() {
@@ -33,8 +33,8 @@ import { ChakraProvider, Grid, GridItem } from "@chakra-ui/react";
 // }
 
 export const useFetch = (url) => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState();
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,10 +45,10 @@ export const useFetch = (url) => {
         const response = await fetch(url);
         const json_file = await response.json();
 
-        setData(Object.values(json_file)[0]);
+        setData(json_file.data);
         setLoading(false);
       } catch (error) {
-        setError(error);
+        setError(true);
         setLoading(false);
       }
     };
@@ -61,16 +61,19 @@ export const useFetch = (url) => {
 
 export function GenerateProjectContent() {
   const { loading, error, data } = useFetch(
-    "http://localhost:1337"
+    "http://localhost:1337/api/projects"
   );
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Oh no! Something's gone wrong 💔</p>;
+  console.log("I'm about to log out this database :)")
   console.log(data);
 
+  if (loading) return <p>Loading...</p>;
+  console.log(error);
+  if (error) return <p>Oh no! Something's gone wrong 💔</p>;
+  
   return (
     <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-      {data.map((project) => (
+      {data.map(project => (
         <div key={project.id} className="project-card">
           <div
             className="project-preview"
