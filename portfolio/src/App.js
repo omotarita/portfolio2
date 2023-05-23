@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./fonts/DanfoStd.otf";
 import "./App.css";
-import { Grid } from "@chakra-ui/react";
+import { ChakraProvider, Grid } from "@chakra-ui/react";
 // require("dotenv").config();
 
 // export function SelectAutoWidth() {
@@ -33,8 +33,8 @@ import { Grid } from "@chakra-ui/react";
 // }
 
 export const useFetch = (url) => {
-  const [data, setData] = useState();
-  const [error, setError] = useState(false);
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export const useFetch = (url) => {
         setData(json_file.data);
         setLoading(false);
       } catch (error) {
-        setError(true);
+        setError(error);
         setLoading(false);
       }
     };
@@ -69,7 +69,7 @@ export function GenerateProjectContent() {
 
   if (loading) return <p>Loading...</p>;
   console.log(error);
-  if (error) return <p>Oh no! Something's gone wrong 💔</p>;
+  if (error) return <p>Oh no! Something's gone wrong 💔 {error.message}</p>;
   
   return (
     <Grid templateColumns="repeat(2, 1fr)" gap={6}>
@@ -104,22 +104,22 @@ function App() {
     <div className="App">
       <header className="App-navbar">
         <div>
-          <meta charset="UTF-8" />
+          <meta charSet="UTF-8" />
           <meta name="viewport" content="width-device-width, initial-scale=1" />
-          <ul class="container nav-styles">
-            <div class="logo">
+          <ul className="container nav-styles">
+            <div className="logo">
               <a href="App.js">🫣</a>
             </div>
-            <div class="nav-items item-spacing">
+            <div className="nav-items item-spacing">
               <a href="work.js">WORK.</a>
             </div>
-            <div class="nav-items item-spacing">
+            <div className="nav-items item-spacing">
               <a href="https://logically.webflow.io/">PLAY.</a>
             </div>
-            <div class="nav-items item-spacing">
+            <div className="nav-items item-spacing">
               <a href="me.js">ME.</a>
             </div>
-            <div class="nav-items item-spacing">
+            <div className="nav-items item-spacing">
               <a href="mailto:omotarita@gmail.com?subject=I saw your portfolio and I wanna know you">
                 CHAT.
               </a>
@@ -127,7 +127,7 @@ function App() {
           </ul>
         </div>
       </header>
-      <body className="main-body center">
+      <div className="main-body center">
         <h1 className="big-intro-text text-left">Hi, I'm</h1>
         <div>
           <p className="big-Danfo-text">Omotara</p>
@@ -144,7 +144,7 @@ function App() {
         <div id="selected-work-section">
           <GenerateProjectContent />
         </div>
-      </body>
+      </div>
     </div>
   );
 }
