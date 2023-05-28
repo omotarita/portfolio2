@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./fonts/DanfoStd.otf";
 import "./App.css";
-import { ChakraProvider, Grid } from "@chakra-ui/react";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import Home from "./pages/home";
+import Me from "./pages/me";
+import Work from "./pages/work";
 // require("dotenv").config();
 
 // export function SelectAutoWidth() {
@@ -32,118 +36,34 @@ import { ChakraProvider, Grid } from "@chakra-ui/react";
 //   );
 // }
 
-export const useFetch = (url) => {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      try {
-        const response = await fetch(url);
-        const json_file = await response.json();
-
-        setData(json_file.data);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [url]);
-
-  return { loading, error, data };
-};
-
-export function GenerateProjectContent() {
-  const { loading, error, data } = useFetch(
-    "http://localhost:1337/api/projects"
-  );
-
-  console.log("I'm about to log out this database :)")
-  console.log(data);
-
-  if (loading) return <p>Loading...</p>;
-  console.log(error);
-  if (error) return <p>Oh no! Something's gone wrong 💔 {error.message}</p>;
-  
-  return (
-    <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-      {data.map(project => (
-        <div key={project.id} className="project-card">
-          <div
-            className="project-preview"
-            // style="backgroundColor: {project.bgcolour}"
-          >
-            <div className="project-thumbnail">
-              {/* <img
-                src={
-                  "http://localhost:1337" +
-                  project.attributes.Media.data.attributes.formats.large.url
-                }
-                className="project-photo"
-              /> */}
-              <div className="overlay FadeEffect">
-                <h4 className="project-slogan">{project.attributes.Slogan}</h4>
-              </div>
-            </div>
-          </div>
-          <h3 className="project-title">{project.attributes.Title}</h3>
-        </div>
-      ))}
-    </Grid>
-  );
-}
-
 function App() {
+  let component;
+  switch (window.location.pathname) {
+    case "/":
+      component = <Home />;
+      break;
+    case "/me":
+      component = <Me />;
+      break;
+    case "/work":
+      component = <Work />;
+      break;
+  }
   return (
     <div className="App">
-      <header className="App-navbar">
-        <div>
-          <meta charSet="UTF-8" />
-          <meta name="viewport" content="width-device-width, initial-scale=1" />
-          <ul className="container nav-styles">
-            <div className="logo">
-              <a href="App.js">🫣</a>
-            </div>
-            <div className="nav-items item-spacing">
-              <a href="work.js">WORK.</a>
-            </div>
-            <div className="nav-items item-spacing">
-              <a href="https://logically.webflow.io/">PLAY.</a>
-            </div>
-            <div className="nav-items item-spacing">
-              <a href="me.js">ME.</a>
-            </div>
-            <div className="nav-items item-spacing">
-              <a href="mailto:omotarita@gmail.com?subject=I saw your portfolio and I wanna know you">
-                CHAT.
-              </a>
-            </div>
-          </ul>
-        </div>
-      </header>
-      <div className="main-body center">
-        <h1 className="big-intro-text text-left">Hi, I'm</h1>
-        <div>
-          <p className="big-Danfo-text">Omotara</p>
-        </div>
-        <h1 className="big-intro-text text-right">
-          and I'm a
-          {/* <SelectAutoWidth /> */}
-        </h1>
-        <div className="line-break"></div>
-        <h3>
-          <a href="#selected-work-section">↓ selected work</a>
-        </h3>
-        <div className="line-break"></div>
-        <div id="selected-work-section">
-          <GenerateProjectContent />
-        </div>
+      <div className="page-container">
+        <header className="App-navbar">
+          <div>
+            <meta charSet="UTF-8" />
+            <meta
+              name="viewport"
+              content="width-device-width, initial-scale=1"
+            />
+            <Navbar />
+          </div>
+        </header>
+        <div className="content-wrapper">{component}</div>
+        {/* <Footer /> */}
       </div>
     </div>
   );
