@@ -51,6 +51,24 @@
     },
     "EndDate": {
       "type": "datetime"
+    },
+    "mediums": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::medium.medium",
+      "mappedBy": "projects"
+    },
+    "stacks": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::stack.stack",
+      "mappedBy": "projects"
+    },
+    "what_i_ams": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::what-i-am.what-i-am",
+      "mappedBy": "projects"
     }
   }
 }

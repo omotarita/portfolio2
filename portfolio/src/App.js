@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import Home from "./pages/home";
 import Me from "./pages/me";
 import Work from "./pages/work";
+import Post from "./pages/post";
 // require("dotenv").config();
 
 // export function SelectAutoWidth() {
@@ -38,17 +39,29 @@ import Work from "./pages/work";
 
 function App() {
   let component;
-  switch (window.location.pathname) {
-    case "/":
-      component = <Home />;
-      break;
-    case "/me":
-      component = <Me />;
-      break;
-    case "/work":
-      component = <Work />;
-      break;
+  if (window.location.pathname == "/") {
+    component = <Home />;
+  } else if (window.location.pathname == "/me") {
+    component = <Me />;
+  } else if (window.location.pathname == "/work") {
+    component = <Work />;
+  } else if (window.location.pathname.includes("/post")) {
+    component = <Post />;
   }
+
+  // switch (window.location.pathname) {
+  //   case "/":
+  //     component = <Home />;
+  //     break;
+  //   case "/me":
+  //     component = <Me />;
+  //     break;
+  //   case "/work":
+  //     component = <Work />;
+  //     break;
+  //   case "/post":
+  //     component = <Post />;
+  // }
   return (
     <div className="App">
       <div className="page-container">
@@ -62,8 +75,20 @@ function App() {
             <Navbar />
           </div>
         </header>
-        <div className="content-wrapper">{component}</div>
-        {/* <Footer /> */}
+        <div className="content-wrapper">
+          <div className="music-player">
+            <div className="buttons">
+              <div className="button-item">⏮️</div>
+              <div className="button-item">▶️</div>
+              <div className="button-item">⏸️</div>
+              <div className="button-item">⏭️</div>
+            </div>
+            <div className="music-player-title">pseudoradio</div>
+          </div>
+          <div className="now-playing">Maps - Yeah Yeah Yeahs</div>
+          {component}
+          <Footer />
+        </div>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const Work = () => {
         <a href="#all-work-section">↓ everything</a>
       </h3>
       <div className="line-break"></div>
-      <div id="all-work-section">
+      <div className="works-section" id="all-work-section">
         <GenerateAllWork />
       </div>
       <div className="line-break"></div>
